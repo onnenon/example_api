@@ -1,6 +1,5 @@
 import logging
 
-import werkzeug.exceptions
 from flask import request
 from marshmallow import ValidationError
 
@@ -9,16 +8,6 @@ from book_api.exceptions import DuplicateBookError
 from book_api.schemas import BookSchema
 
 logger = logging.getLogger(__name__)
-
-
-@app.api.errorhandler(werkzeug.exceptions.BadRequest)
-def handle_bad_request(e):
-    return {"error": str(e)}, 400
-
-
-@app.api.errorhandler(werkzeug.exceptions.NotFound)
-def handle_not_found(e):
-    return {"error": "not found"}, 404
 
 
 @app.api.route("/health")

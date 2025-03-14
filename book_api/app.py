@@ -1,5 +1,6 @@
 import logging
 
+import werkzeug.exceptions
 from flask import Flask
 
 from book_api.db import db_session, init_db
@@ -17,6 +18,16 @@ class AppDefinition:
 
 
 app = AppDefinition()
+
+
+@app.api.errorhandler(werkzeug.exceptions.BadRequest)
+def handle_bad_request(e):
+    return {"error": str(e)}, 400
+
+
+@app.api.errorhandler(werkzeug.exceptions.NotFound)
+def handle_not_found(e):
+    return {"error": "not found"}, 404
 
 
 def create_app():
