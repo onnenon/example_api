@@ -34,6 +34,14 @@ Run the tests:
 make test
 ```
 
+Format and lint the code:
+```bash
+make pretty
+```
+This command will:
+- Format the code using ruff formatter
+- Run the ruff linter and apply auto-fixes where possible
+
 ## Project Structure
 
 - `book_api/` - Main application package
