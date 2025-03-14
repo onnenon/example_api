@@ -53,5 +53,30 @@ class BookService:
         except ValueError:
             return None
 
-    def delete_book(self, book_id):
-        return self.book_repository.delete(book_id)
+    def delete_book(self, book_id: int) -> bool:
+        """
+        Deletes a book from the repository.
+
+        Args:
+            book_id (int): The ID of the book to be deleted.
+
+        Returns:
+            bool: True if the book was successfully deleted, False otherwise.
+        """
+        try:
+            self.book_repository.delete(book_id)
+            return True
+        except ValueError:
+            return False
+
+    def get_all_books_by_author(self, author: str) -> List[Book]:
+        """
+        Retrieve all books by a specific author.
+
+        Args:
+            author (str): The name of the author.
+
+        Returns:
+            list: A list of books written by the specified author.
+        """
+        return [book for book in self.get_all_books() if book.author == author]

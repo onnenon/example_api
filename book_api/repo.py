@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, scoped_session
 
 from book_api.exceptions import DuplicateBookError
 from book_api.models import Book
@@ -12,7 +12,13 @@ logger = logging.getLogger(__name__)
 
 
 class AbstractBookRepository(ABC):
-    """Abstract base class defining the interface for book repositories."""
+    """
+    Abstract base class defining the interface for book repositories.
+
+    This could be generic, but for simplicity, we are keeping it specific to the
+    Book model. Subclasses should implement the methods to interact with the underlying
+    data store.
+    """
 
     @abstractmethod
     def get_all(self) -> List[Book]:
@@ -36,7 +42,7 @@ class AbstractBookRepository(ABC):
 
 
 class BookRepository(AbstractBookRepository):
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: scoped_session[Session]) -> None:
         self.session = session
 
     def get_all(self) -> List[Book]:

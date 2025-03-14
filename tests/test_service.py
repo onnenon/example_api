@@ -116,15 +116,9 @@ def test_get_book_should_return_none_when_book_not_found(book_service):
 
 
 def test_delete_book_should_delete_book_successfully(seeded_book_service):
-    book = seeded_book_service.delete_book(1)
-    assert book.title == "Test Book"
-    assert book.author == "Test Author"
-    assert book.isbn == "1234567890123"
-
-    # Verify that the book is deleted
+    assert seeded_book_service.delete_book(1) is True
     assert seeded_book_service.get_book(1) is None
 
 
-def test_delete_book_should_raise_value_error_when_book_not_found(book_service):
-    with pytest.raises(ValueError):
-        book_service.delete_book(999)
+def test_delete_book_should_return_false_if_the_it_does_not_exist(book_service):
+    assert book_service.delete_book(999) is False
