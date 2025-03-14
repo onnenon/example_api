@@ -5,3 +5,5 @@ test:
 pretty:
 	uv run ruff format .
 	uv run ruff check --fix .
+reset-db:
+	rm -rf test.db
