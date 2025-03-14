@@ -12,5 +12,5 @@ dependencies = [
 [dependency-groups]
 dev = ["mypy>=1.15.0", "pytest>=8.3.5", "ruff>=0.11.0"]
 
-[tool.ruff]
+[tool.ruff.lint]
 extend-select = ["E", "F", "I", "C", "B", "W"]
