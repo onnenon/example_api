@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://127.0.0.1:5000/books
+  url: http://127.0.0.1:5000/books?author=baz
   body: none
   auth: none
+}
+
+params:query {
+  author: baz
 }

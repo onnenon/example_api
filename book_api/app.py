@@ -10,34 +10,42 @@ from book_api.repo import BookRepository
 from book_api.schemas import BookSchema
 from book_api.service import BookService
 
-app = Flask(__name__)
+
+class AppDefinition:
+    def __init__(self):
+        self.api = Flask(__name__)
+        self.book_repository = BookRepository(db_session)
+        self.book_service = BookService(self.book_repository)
+
+
+app = AppDefinition()
 
 logger = logging.getLogger(__name__)
 
 
-@app.errorhandler(werkzeug.exceptions.BadRequest)
+@app.api.errorhandler(werkzeug.exceptions.BadRequest)
 def handle_bad_request(e):
     return {"error": str(e)}, 400
 
 
-@app.errorhandler(werkzeug.exceptions.NotFound)
+@app.api.errorhandler(werkzeug.exceptions.NotFound)
 def handle_not_found(e):
     return {"error": "not found"}, 404
 
 
-@app.route("/health")
+@app.api.route("/health")
 def health_check():
     logger.debug("Health check endpoint called")
     return {"status": "healthy"}, 200
 
 
-@app.route("/books", methods=["GET"])
+@app.api.route("/books", methods=["GET"])
 def get_books():
     books = app.book_service.get_all_books()
     return {"books": [BookSchema().dump(book) for book in books]}, 200
 
 
-@app.route("/books/<int:book_id>", methods=["GET"])
+@app.api.route("/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
     book = app.book_service.get_book(book_id)
     if not book:
@@ -45,7 +53,7 @@ def get_book(book_id):
     return {"book": BookSchema().dump(book)}, 200
 
 
-@app.route("/books/<int:book_id>", methods=["DELETE"])
+@app.api.route("/books/<int:book_id>", methods=["DELETE"])
 def delete_book(book_id):
     try:
         deleted_book = app.book_service.delete_book(book_id)
@@ -60,7 +68,7 @@ def delete_book(book_id):
         return {"error": "An unexpected error occurred"}, 500
 
 
-@app.route("/books", methods=["POST"])
+@app.api.route("/books", methods=["POST"])
 def create_book():
     try:
         book_data = BookSchema().load(request.json)
@@ -75,10 +83,8 @@ def create_book():
 
 
 def create_app():
-    app.logger.setLevel(logging.DEBUG)
-    app.book_repository = BookRepository(db_session)
-    app.book_service = BookService(app.book_repository)
+    app.api.logger.setLevel(logging.DEBUG)
 
-    with app.app_context():
+    with app.api.app_context():
         init_db()
-    return app
+    return app.api
