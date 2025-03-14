@@ -12,3 +12,4 @@ wheels/
 # Virtual environments
 .venv
 test.db
+.DS_Store
