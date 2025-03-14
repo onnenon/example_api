@@ -12,9 +12,6 @@ class Base(DeclarativeBase):
     pass
 
 
-Base.query = db_session.query_property()
-
-
 def init_db():
     import book_api.models  # noqa: F401
 
