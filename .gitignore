@@ -5,8 +5,9 @@ build/
 dist/
 wheels/
 *.egg-info
-.my_cache/
+.mypy_cache/
 .ruff_cache/
+.pytest_cache/
 
 # Virtual environments
 .venv

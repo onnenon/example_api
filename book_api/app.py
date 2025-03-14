@@ -5,6 +5,7 @@ from flask import Flask, request
 from marshmallow import ValidationError
 
 from book_api.db import db_session, init_db
+from book_api.exceptions import DuplicateBookError
 from book_api.repo import BookRepository
 from book_api.schemas import BookSchema
 from book_api.service import BookService
@@ -54,6 +55,9 @@ def create_book():
     except ValidationError as e:
         logger.error(f"Validation error: {e.messages}")
         return {"error": e.messages}, 400
+    except DuplicateBookError as e:
+        logger.error(f"Duplicate book error: {str(e)}")
+        return {"error": str(e)}, 409
 
 
 def create_app():

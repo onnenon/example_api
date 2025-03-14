@@ -1,4 +1,11 @@
+import logging
+
+from sqlalchemy.exc import IntegrityError
+
+from book_api.exceptions import DuplicateBookError
 from book_api.models import Book
+
+logger = logging.getLogger(__name__)
 
 
 class BookRepository:
@@ -15,6 +22,13 @@ class BookRepository:
         return book
 
     def save(self, book):
-        self.session.add(book)
-        self.session.commit()
-        return book
+        try:
+            self.session.add(book)
+            self.session.commit()
+            return book
+        except IntegrityError as e:
+            logger.exception(str(e))
+            self.session.rollback()
+            raise DuplicateBookError(
+                f"Book with ISBN {book.isbn} already exists."
+            ) from e
