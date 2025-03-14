@@ -36,7 +36,7 @@ def handle_not_found(e):
 @app.api.route("/health")
 def health_check():
     logger.debug("Health check endpoint called")
-    return {"status": "healthy"}, 200
+    return {"status": "ok"}, 200
 
 
 @app.api.route("/books", methods=["GET"])
@@ -76,7 +76,7 @@ def create_book():
         return {"message": "Book created successfully", "id": new_book.id}, 201
     except ValidationError as e:
         logger.error(f"Validation error: {e.messages}")
-        return {"error": e.messages}, 400
+        return {"error": str(e)}, 400
     except DuplicateBookError as e:
         logger.error(f"Duplicate book error: {str(e)}")
         return {"error": str(e)}, 409

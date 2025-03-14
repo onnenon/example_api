@@ -71,7 +71,7 @@ class BookRepository(AbstractBookRepository):
             self.session.commit()
             return book
         except IntegrityError as e:
-            logger.exception(str(e))
+            logger.error(f"Error saving book with ISBN {book.isbn}")
             self.session.rollback()
             raise DuplicateBookError(
                 f"Book with ISBN {book.isbn} already exists."
