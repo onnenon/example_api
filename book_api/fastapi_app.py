@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import Annotated, Any, Dict, List
 
 from fastapi import Depends, FastAPI
@@ -7,7 +8,16 @@ from book_api.exceptions import DuplicateBookError
 from book_api.schemas import BookSchema
 from book_api.service import BookService
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    from book_api.db import init_db
+
+    init_db()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 async def get_book_service():
@@ -26,8 +36,12 @@ async def health():
 @app.get("/books")
 async def get_books(
     book_service: Annotated[BookService, Depends(get_book_service)],
+    author: str | None = None,
 ) -> Dict[str, List[BookSchema]]:
-    books = book_service.get_all_books()
+    if author:
+        books = book_service.get_all_books_by_author(author)
+    else:
+        books = book_service.get_all_books()
     return {"books": books}
 
 
