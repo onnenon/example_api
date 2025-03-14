@@ -1,19 +1,20 @@
-from sqlalchemy.orm import DeclarativeBase, mapped_column
-from sqlalchemy import Integer, String, Date
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, scoped_session, sessionmaker
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class Book(Base):
-    __tablename__ = "books"
+engine = create_engine("sqlite:///test.db")
 
-    id = mapped_column(Integer, primary_key=True)
-    title = mapped_column(String(255), nullable=False)
-    author = mapped_column(String(255), nullable=False)
-    published_date = mapped_column(Date, nullable=True)
-    isbn = mapped_column(String(13), unique=True, nullable=False)
+db_session = scoped_session(
+    sessionmaker(autocommit=False, autoflush=False, bind=engine)
+)
+Base.query = db_session.query_property()
 
-    def __repr__(self):
-        return f"<Book {self.title} by {self.author}>"
+
+def init_db():
+    import py_api.models  # noqa: F401
+
+    Base.metadata.create_all(bind=engine)
