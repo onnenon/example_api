@@ -1,2 +1,2 @@
 run:
-	flask --app py_api/app:create_app --debug run
+	flask --app book_api/app:create_app --debug run
