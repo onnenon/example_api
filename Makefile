@@ -1,5 +1,5 @@
 run:
-	uv run flask --app book_api/app:create_app --debug run
+	uv run flask --app book_api/flask_app:create_app --debug run
 test:
 	uv run pytest .
 pretty:
