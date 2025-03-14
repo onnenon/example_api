@@ -1,0 +1,15 @@
+meta {
+  name: Get Book
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://127.0.0.1:5000/books/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 1
+}

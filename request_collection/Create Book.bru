@@ -1,0 +1,18 @@
+meta {
+  name: Create Book
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:5000/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "fo2o",
+    "author": "baz"
+  }
+}
