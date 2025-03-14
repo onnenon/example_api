@@ -23,7 +23,7 @@ class StubBookRepository(AbstractBookRepository):
             raise ValueError(f"Book with id {book_id} not found.")
         return books[0]
 
-    def save(self, book) -> int:
+    def save(self, book):
         if self.books.get(book.isbn) is not None:
             raise DuplicateBookError("Book already exists.")
         book = Book(
