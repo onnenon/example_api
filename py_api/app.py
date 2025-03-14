@@ -15,19 +15,14 @@ def health_check():
 @app.route("/books", methods=["GET"])
 def get_books():
     books = Book.get_all()
-    return {
-        "books": [
-            {"id": book.id, "title": book.title, "author": book.author}
-            for book in books
-        ]
-    }, 200
+    return {"books": [BookSchema().dump(book) for book in books]}, 200
 
 
 @app.route("/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
     try:
         book = Book.get_by_id(book_id)
-        return {"id": book.id, "title": book.title, "author": book.author}, 200
+        return {"book": BookSchema().dump(book)}, 200
     except ValueError as e:
         return {"error": str(e)}, 404
 
