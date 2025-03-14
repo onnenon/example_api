@@ -46,6 +46,21 @@ def get_book(book_id):
         return {"error": str(e)}, 404
 
 
+@app.route("/books/<int:book_id>", methods=["DELETE"])
+def delete_book(book_id):
+    try:
+        deleted_book = app.book_service.delete_book(book_id)
+        return {
+            "message": "Book deleted successfully",
+            "book": BookSchema().dump(deleted_book),
+        }, 200
+    except ValueError as e:
+        return {"error": str(e)}, 404
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return {"error": "An unexpected error occurred"}, 500
+
+
 @app.route("/books", methods=["POST"])
 def create_book():
     try:

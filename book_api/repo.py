@@ -21,6 +21,12 @@ class BookRepository:
             raise ValueError(f"Book with id {book_id} not found.")
         return book
 
+    def delete(self, book_id):
+        book = self.get_by_id(book_id)
+        self.session.delete(book)
+        self.session.commit()
+        return book
+
     def save(self, book):
         try:
             self.session.add(book)
