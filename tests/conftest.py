@@ -1,6 +1,5 @@
 import pytest
 
-from book_api.flask_app import create_app
 from book_api.models import Book
 from book_api.service import BookService
 from tests.stub_repo import StubBookRepository
@@ -30,15 +29,3 @@ def seeded_book_service():
     }
     bs = StubBookRepository(books)
     return BookService(bs)
-
-
-@pytest.fixture()
-def flask_app():
-    app = create_app()
-    app.config["TESTING"] = True
-    yield app
-
-
-@pytest.fixture()
-def flask_client(flask_app):
-    return flask_app.test_client()
