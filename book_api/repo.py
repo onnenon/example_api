@@ -42,6 +42,11 @@ class AbstractBookRepository(ABC):
 
 
 class BookRepository(AbstractBookRepository):
+    """
+    Implementation of the Book repository using SQLAlchemy and a DataBase
+    as the data store.
+    """
+
     def __init__(self, session: scoped_session[Session]) -> None:
         self.session = session
 
