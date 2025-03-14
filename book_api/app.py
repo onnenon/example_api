@@ -39,11 +39,10 @@ def get_books():
 
 @app.route("/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
-    try:
-        book = app.book_service.get_book(book_id)
-        return {"book": BookSchema().dump(book)}, 200
-    except ValueError as e:
-        return {"error": str(e)}, 404
+    book = app.book_service.get_book(book_id)
+    if not book:
+        return {"error": f"Book not found with ID {book_id}"}, 404
+    return {"book": BookSchema().dump(book)}, 200
 
 
 @app.route("/books/<int:book_id>", methods=["DELETE"])

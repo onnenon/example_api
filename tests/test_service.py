@@ -2,10 +2,11 @@ import pytest
 
 from book_api.exceptions import DuplicateBookError
 from book_api.models import Book
+from book_api.repo import AbstractBookRepository
 from book_api.service import BookService
 
 
-class MockBookRepository:
+class StubBookRepository(AbstractBookRepository):
     def __init__(self, books=None):
         if books:
             print(books)
@@ -22,7 +23,7 @@ class MockBookRepository:
             raise ValueError(f"Book with id {book_id} not found.")
         return books[0]
 
-    def save(self, book):
+    def save(self, book) -> int:
         if self.books.get(book.isbn) is not None:
             raise DuplicateBookError("Book already exists.")
         book = Book(
@@ -42,7 +43,7 @@ class MockBookRepository:
 
 @pytest.fixture
 def book_service():
-    return BookService(MockBookRepository())
+    return BookService(StubBookRepository())
 
 
 @pytest.fixture()
@@ -62,7 +63,7 @@ def seeded_book_service():
             id=2,
         ),
     }
-    bs = MockBookRepository(books)
+    bs = StubBookRepository(books)
     return BookService(bs)
 
 
