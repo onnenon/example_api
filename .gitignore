@@ -13,3 +13,4 @@ wheels/
 .venv
 test.db
 .DS_Store
+.coverage
