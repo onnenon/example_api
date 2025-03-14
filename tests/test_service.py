@@ -1,15 +1,18 @@
 import pytest
 
 from book_api.exceptions import DuplicateBookError
+from book_api.schemas import BookSchema
 
 
 def test_create_book_should_create_book_successfully(book_service):
-    book_data = {
-        "title": "Test Book",
-        "author": "Test Author",
-        "isbn": "1234567890123",
-    }
-    book = book_service.create_book(**book_data)
+    book_data = BookSchema(
+        **{
+            "title": "Test Book",
+            "author": "Test Author",
+            "isbn": "1234567890123",
+        }
+    )
+    book = book_service.create_book(book_data)
     assert book.id == 1
     assert book.title == "Test Book"
     assert book.author == "Test Author"
@@ -17,12 +20,14 @@ def test_create_book_should_create_book_successfully(book_service):
 
 
 def create_duplicate_book_should_raise_duplicate_book_error(book_service):
-    book_data = {
-        "title": "Test Book",
-        "author": "Test Author",
-        "isbn": "1234567890123",
-    }
-    book_service.create_book(**book_data)
+    book_data = BookSchema(
+        **{
+            "title": "Test Book",
+            "author": "Test Author",
+            "isbn": "1234567890123",
+        }
+    )
+    book_service.create_book(book_data)
     with pytest.raises(DuplicateBookError):
         book_service.create_book(**book_data)
 

@@ -2,42 +2,30 @@ from typing import List, Optional
 
 from book_api.models import Book
 from book_api.repo import AbstractBookRepository
+from book_api.schemas import BookSchema
 
 
 class BookService:
     def __init__(self, book_repository: AbstractBookRepository):
         self.book_repository = book_repository
 
-    def get_all_books(self) -> List[Book]:
+    def get_all_books(self) -> List[BookSchema]:
         """
         Retrieve all books from the repository.
 
         Returns:
             list: A list of all books.
         """
-        return self.book_repository.get_all()
+        return [
+            BookSchema.model_validate(book) for book in self.book_repository.get_all()
+        ]
 
-    def create_book(self, title: str, author: str, isbn: str) -> Book:
-        """
-        Creates a new book with the given title, author, and ISBN, and saves
-        it to the repository.
+    def create_book(self, book_data: BookSchema) -> BookSchema:
+        """Create a new book"""
+        book = Book.from_schema(book_data)
+        return BookSchema.model_validate(self.book_repository.save(book))
 
-        Args:
-            title (str): The title of the book.
-            author (str): The author of the book.
-            isbn (str): The ISBN of the book.
-
-        Returns:
-            Book: The saved book instance.
-
-        Raises:
-            DuplicateBookError: If a book with the same ISBN already exists
-            in the repository.
-        """
-        book = Book(title=title, author=author, isbn=isbn)
-        return self.book_repository.save(book)
-
-    def get_book(self, book_id: int) -> Optional[Book]:
+    def get_book(self, book_id: int) -> Optional[BookSchema]:
         """
         Retrieve a book by its ID.
 
@@ -49,7 +37,7 @@ class BookService:
         """
         try:
             book = self.book_repository.get_by_id(book_id)
-            return book
+            return BookSchema.model_validate(book)
         except ValueError:
             return None
 
@@ -69,7 +57,7 @@ class BookService:
         except ValueError:
             return False
 
-    def get_all_books_by_author(self, author: str) -> List[Book]:
+    def get_all_books_by_author(self, author: str) -> List[BookSchema]:
         """
         Retrieve all books by a specific author.
 

@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from book_api.db import db_session, init_db
 from book_api.exceptions import DuplicateBookError
 from book_api.repo import BookRepository
-from book_api.schemas import Book
+from book_api.schemas import BookSchema
 from book_api.service import BookService
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ def health_check():
 @app.api.route("/books", methods=["GET"])
 def get_books():
     books = app.book_service.get_all_books()
-    return {"books": [Book(book) for book in books]}, 200
+    return {"books": [BookSchema.model_dump(book) for book in books]}, 200
 
 
 @app.api.route("/books/<int:book_id>", methods=["GET"])
@@ -50,7 +50,7 @@ def get_book(book_id):
     book = app.book_service.get_book(book_id)
     if not book:
         return {"error": f"Book not found with ID {book_id}"}, 404
-    return {"book": Book(book)}, 200
+    return {"book": BookSchema.model_dump(book)}, 200
 
 
 @app.api.route("/books/<int:book_id>", methods=["DELETE"])
@@ -71,8 +71,8 @@ def delete_book(book_id):
 @app.api.route("/books", methods=["POST"])
 def create_book():
     try:
-        book_data = Book(request.json)
-        new_book = app.book_service.create_book(**book_data)
+        book_data = BookSchema.model_validate(request.json)
+        new_book = app.book_service.create_book(book_data)
         return {"message": "Book created successfully", "id": new_book.id}, 201
     except ValidationError as e:
         logger.error(f"Validation error: {e.messages}")

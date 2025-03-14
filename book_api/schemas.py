@@ -1,17 +1,11 @@
 from typing import Optional
 
-from marshmallow import Schema, fields
-from pydantic import BaseModel, Field, ValidationError, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 
-class BookSchema(Schema):
-    id = fields.Int(dump_only=True)
-    title = fields.Str(required=True)
-    author = fields.Str(required=True)
-    isbn = fields.Str(required=True, validate=lambda x: len(x) == 13)
+class BookSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
 
-
-class Book(BaseModel):
     id: Optional[int] = Field(default=None)
     title: str
     author: str
