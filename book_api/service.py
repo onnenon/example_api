@@ -14,14 +14,25 @@ class BookService:
         Retrieve all books from the repository.
 
         Returns:
-            list: A list of all books.
+            list[BookSchema]: A list of all books.
         """
         return [
             BookSchema.model_validate(book) for book in self.book_repository.get_all()
         ]
 
     def create_book(self, book_data: BookSchema) -> BookSchema:
-        """Create a new book"""
+        """
+        Creates a new book record in the repository.
+
+        Args:
+            book_data (BookSchema): The data of the book to be created.
+
+        Returns:
+            BookSchema: The created book data after being saved in the repository.
+
+        Raises:
+            DuplicateBookError: If a book with the same ISBN already exists.
+        """
         book = Book.from_schema(book_data)
         return BookSchema.model_validate(self.book_repository.save(book))
 
@@ -33,7 +44,8 @@ class BookService:
             book_id (int): The unique identifier of the book to retrieve.
 
         Returns:
-            Book: The book corresponding to the given ID, or None if no book is found.
+            BookSchema: The book corresponding to the given ID, or None if no
+            book is found.
         """
         try:
             book = self.book_repository.get_by_id(book_id)
@@ -65,6 +77,6 @@ class BookService:
             author (str): The name of the author.
 
         Returns:
-            list: A list of books written by the specified author.
+            list[BookSchema]: A list of books written by the specified author.
         """
         return [book for book in self.get_all_books() if book.author == author]
