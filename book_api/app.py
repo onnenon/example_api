@@ -4,9 +4,10 @@ import werkzeug.exceptions
 from flask import Flask, request
 from marshmallow import ValidationError
 
-from book_api.db import init_db
-from book_api.models import Book
+from book_api.db import db_session, init_db
+from book_api.repo import BookRepository
 from book_api.schemas import BookSchema
+from book_api.service import BookService
 
 app = Flask(__name__)
 
@@ -31,14 +32,14 @@ def health_check():
 
 @app.route("/books", methods=["GET"])
 def get_books():
-    books = Book.get_all()
+    books = app.book_service.get_all_books()
     return {"books": [BookSchema().dump(book) for book in books]}, 200
 
 
 @app.route("/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
     try:
-        book = Book.get_by_id(book_id)
+        book = app.book_service.get_book(book_id)
         return {"book": BookSchema().dump(book)}, 200
     except ValueError as e:
         return {"error": str(e)}, 404
@@ -48,8 +49,7 @@ def get_book(book_id):
 def create_book():
     try:
         book_data = BookSchema().load(request.json)
-        new_book = Book(**book_data)
-        new_book.save()
+        new_book = app.book_service.create_book(**book_data)
         return {"message": "Book created successfully", "id": new_book.id}, 201
     except ValidationError as e:
         logger.error(f"Validation error: {e.messages}")
@@ -62,6 +62,8 @@ def create_book():
 
 def create_app():
     app.logger.setLevel(logging.DEBUG)
+    app.book_repository = BookRepository(db_session)
+    app.book_service = BookService(app.book_repository)
 
     with app.app_context():
         init_db()

@@ -13,21 +13,3 @@ class Book(Base):
 
     def __repr__(self):
         return f"<Book {self.title} by {self.author}>"
-
-    @classmethod
-    def get_all(cls):
-        """Fetch all books from the database."""
-        return cls.session.query(Book).all()
-
-    @classmethod
-    def get_by_id(cls, book_id):
-        """Fetch a book by its ID."""
-        book = cls.session.query(Book).filter(Book.id == book_id).first()
-        if not book:
-            raise ValueError(f"Book with id {book_id} not found.")
-        return book
-
-    def save(self):
-        """Save the book instance to the database."""
-        self.session.add(self)
-        self.session.commit()

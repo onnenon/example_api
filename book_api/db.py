@@ -9,7 +9,7 @@ db_session = scoped_session(
 
 
 class Base(DeclarativeBase):
-    session = db_session
+    pass
 
 
 Base.query = db_session.query_property()
