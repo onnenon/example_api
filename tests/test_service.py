@@ -120,5 +120,18 @@ def test_delete_book_should_delete_book_successfully(seeded_book_service):
     assert seeded_book_service.get_book(1) is None
 
 
-def test_delete_book_should_return_false_if_the_it_does_not_exist(book_service):
+def test_delete_book_should_return_false_if_it_does_not_exist(book_service):
     assert book_service.delete_book(999) is False
+
+
+def test_get_all_books_by_author_should_return_books_by_author(seeded_book_service):
+    books = seeded_book_service.get_all_books_by_author("Test Author")
+    assert len(books) == 1
+    assert books[0].title == "Test Book"
+
+
+def test_get_all_books_by_author_should_return_empty_list_if_no_books_by_author(
+    seeded_book_service,
+):
+    books = seeded_book_service.get_all_books_by_author("Nonexistent Author")
+    assert len(books) == 0
