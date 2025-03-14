@@ -2,9 +2,9 @@ name: PR Checks
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test:
@@ -15,20 +15,19 @@ jobs:
       - name: Install UV
         uses: astral-sh/setup-uv@v5
         with:
-            version: "latest"
+          version: "latest"
 
       - name: Install dependencies
         run: uv sync
 
       - name: Check Formatting
-        run: ruff format . --check
+        run: uv run ruff format . --check
 
       - name: Run Linter
-        run: ruff check .
-          
+        run: uv run ruff check .
+
       - name: Run type checks
-        run: mypy book_api tests
+        run: uv run mypy book_api tests
 
       - name: Run tests
         run: make test
-    
