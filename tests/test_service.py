@@ -110,9 +110,9 @@ def test_get_book_should_return_book_by_id(seeded_book_service):
     assert book.isbn == "1234567890123"
 
 
-def test_get_book_should_raise_value_error_when_book_not_found(book_service):
-    with pytest.raises(ValueError):
-        book_service.get_book(999)
+def test_get_book_should_return_none_when_book_not_found(book_service):
+    book = book_service.get_book(999)
+    assert book is None
 
 
 def test_delete_book_should_delete_book_successfully(seeded_book_service):
@@ -122,8 +122,7 @@ def test_delete_book_should_delete_book_successfully(seeded_book_service):
     assert book.isbn == "1234567890123"
 
     # Verify that the book is deleted
-    with pytest.raises(ValueError):
-        seeded_book_service.get_book(1)
+    assert seeded_book_service.get_book(1) is None
 
 
 def test_delete_book_should_raise_value_error_when_book_not_found(book_service):

@@ -20,9 +20,6 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
-      - name: Run tests
-        run: make test
-    
       - name: Check Formatting
         run: ruff format . --check
 
@@ -31,3 +28,7 @@ jobs:
           
       - name: Run type checks
         run: mypy book_api tests
+
+      - name: Run tests
+        run: make test
+    
