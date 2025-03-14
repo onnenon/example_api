@@ -3,7 +3,7 @@ run:
 run-fastapi:
 	uv run fastapi dev book_api/fastapi_app.py
 test:
-	uv run pytest .
+	uv run pytest --cov=book_api tests/
 pretty:
 	uv run ruff format .
 	uv run ruff check --fix .

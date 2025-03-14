@@ -12,7 +12,12 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["mypy>=1.15.0", "pytest>=8.3.5", "ruff>=0.11.0"]
+dev = [
+    "mypy>=1.15.0",
+ "pytest>=8.3.5",
+ "pytest-cov>=6.0.0",
+ "ruff>=0.11.0",
+]
 
 [tool.ruff.lint]
 extend-select = ["E", "F", "I", "C", "B", "W"]
