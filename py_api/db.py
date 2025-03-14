@@ -1,16 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, scoped_session, sessionmaker
 
-
-class Base(DeclarativeBase):
-    pass
-
-
 engine = create_engine("sqlite:///test.db")
 
 db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
 )
+
+
+class Base(DeclarativeBase):
+    session = db_session
+
+
 Base.query = db_session.query_property()
 
 
