@@ -9,3 +9,7 @@ pretty:
 	uv run ruff check --fix .
 reset-db:
 	rm -rf test.db
+check:
+	uv run mypy book_api tests
+	uv run ruff format --check
+	uv run ruff check

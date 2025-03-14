@@ -48,6 +48,15 @@ This command will:
 - Format the code using ruff formatter
 - Run the ruff linter and apply auto-fixes where possible
 
+Check code quality:
+```bash
+make check
+```
+This command will:
+- Run type checking with mypy
+- Verify code formatting with ruff
+- Run the ruff linter without applying fixes
+
 ## Project Structure
 
 - `book_api/` - Main application package
