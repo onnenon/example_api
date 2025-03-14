@@ -1,0 +1,39 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "uv"
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v5
+        with:
+            version: "latest"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        run: make test
+    
+      - name: Check Formatting
+        run: ruff format . --check
+
+      - name: Run Linter
+        run: ruff check .
+          
+      - name: Run type checks
+        run: mypy book_api tests
