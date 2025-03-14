@@ -54,10 +54,6 @@ def create_book():
     except ValidationError as e:
         logger.error(f"Validation error: {e.messages}")
         return {"error": e.messages}, 400
-    except werkzeug.exceptions.BadRequest:
-        return {
-            "error": "Invalid JSON format or missing Content-Type: application/json header"
-        }, 400
 
 
 def create_app():
