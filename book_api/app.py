@@ -1,8 +1,8 @@
 from flask import Flask, request
 
-from py_api.db import init_db
-from py_api.models import Book
-from py_api.schemas import BookSchema
+from book_api.db import init_db
+from book_api.models import Book
+from book_api.schemas import BookSchema
 
 app = Flask(__name__)
 

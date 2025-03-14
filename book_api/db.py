@@ -16,6 +16,6 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    import py_api.models  # noqa: F401
+    import book_api.models  # noqa: F401
 
     Base.metadata.create_all(bind=engine)

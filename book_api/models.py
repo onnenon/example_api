@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import mapped_column
 
-from py_api.db import Base
+from book_api.db import Base
 
 
 class Book(Base):
