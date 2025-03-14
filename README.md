@@ -55,3 +55,23 @@ This command will:
 
 - `tests/` - Test suite
   - `test_service.py` - Service layer tests
+
+## API Testing with Bruno
+This project includes a collection of API requests that can be imported into Bruno, a modern API client.
+
+### Setting up Bruno
+1. Install Bruno from https://www.usebruno.com/
+2. Open Bruno
+3. Click "Open Collection" or use the keyboard shortcut
+4. Navigate to the `requests_collection` folder in this repository
+5. Select the folder to import all the available API requests
+
+### Available Requests
+The collection includes the following requests:
+- Health Check - Test the API's health endpoint
+- Create Book - Create a new book
+- Get Books - List all books
+- Get Book - Retrieve a specific book
+- Delete Book - Remove a book
+
+Each request is pre-configured with the appropriate HTTP method, headers, and body structure for testing the API endpoints.
