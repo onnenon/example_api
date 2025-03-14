@@ -4,6 +4,7 @@ run-fastapi:
 	uv run fastapi dev book_api/fastapi_app.py
 test:
 	uv run pytest --cov=book_api tests/
+	uv run coverage html
 pretty:
 	uv run ruff format .
 	uv run ruff check --fix .

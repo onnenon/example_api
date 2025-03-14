@@ -1,3 +1,4 @@
+import json
 import logging
 
 import werkzeug.exceptions
@@ -75,8 +76,8 @@ def create_book():
         new_book = app.book_service.create_book(book_data)
         return {"message": "Book created successfully", "id": new_book.id}, 201
     except ValidationError as e:
-        logger.error(f"Validation error: {e.messages}")
-        return {"error": str(e)}, 400
+        logger.error(f"Validation error: {str(e)}")
+        return {"error": json.loads(e.json())}, 400
     except DuplicateBookError as e:
         logger.error(f"Duplicate book error: {str(e)}")
         return {"error": str(e)}, 409
