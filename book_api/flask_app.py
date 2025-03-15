@@ -42,7 +42,11 @@ def health_check():
 
 @app.api.route("/books", methods=["GET"])
 def get_books():
-    books = app.book_service.get_all_books()
+    author = request.args.get("author")
+    if author:
+        books = app.book_service.get_all_books_by_author(author)
+    else:
+        books = app.book_service.get_all_books()
     return {"books": [BookSchema.model_dump(book) for book in books]}, 200
 
 

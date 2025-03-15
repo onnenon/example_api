@@ -34,7 +34,8 @@ class BookService:
             DuplicateBookError: If a book with the same ISBN already exists.
         """
         book = Book.from_schema(book_data)
-        return BookSchema.model_validate(self.book_repository.save(book))
+        saved_book = self.book_repository.save(book)
+        return BookSchema.model_validate(saved_book)
 
     def get_book(self, book_id: int) -> Optional[BookSchema]:
         """
