@@ -11,6 +11,6 @@ pretty:
 reset-db:
 	rm -rf test.db
 check:
-	uv run mypy book_api tests
+	uv run ty check book_api tests
 	uv run ruff format --check
 	uv run ruff check
