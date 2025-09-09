@@ -3,12 +3,20 @@ updates:
   - package-ecosystem: "uv"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    groups:
+      dev:
+        patterns:
+          - "pytest*"
+          - ruff
+          - ty
+      minor:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-    groups:
-      all:
-        patterns:
-          - '*'
+      interval: "monthly"
