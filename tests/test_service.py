@@ -25,7 +25,7 @@ def create_duplicate_book_should_raise_duplicate_book_error(book_service):
     )
     book_service.create_book(book_data)
     with pytest.raises(DuplicateBookError):
-        book_service.create_book(**book_data)
+        book_service.create_book(book_data)
 
 
 def test_get_all_books_should_return_all_books(seeded_book_service):
