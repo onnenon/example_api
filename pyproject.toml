@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=9.0.3", "pytest-cov>=6.0.0", "ruff>=0.15.12", "ty>=0.0.34"]
+dev = ["pytest>=9.0.3", "pytest-cov>=6.0.0", "ruff>=0.15.15", "ty>=0.0.42"]
 
 [tool.ruff.lint]
 extend-select = ["E", "F", "I", "C", "B", "W"]
