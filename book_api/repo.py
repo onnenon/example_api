@@ -1,6 +1,5 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import List
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, scoped_session
@@ -21,24 +20,20 @@ class AbstractBookRepository(ABC):
     """
 
     @abstractmethod
-    def get_all(self) -> List[Book]:
+    def get_all(self) -> list[Book]:
         """Retrieve all books."""
-        pass
 
     @abstractmethod
     def get_by_id(self, book_id: int) -> Book:
         """Retrieve a book by its ID."""
-        pass
 
     @abstractmethod
     def save(self, book: Book) -> Book:
         """Save a book to the repository."""
-        pass
 
     @abstractmethod
     def delete(self, book_id: int) -> Book:
         """Delete a book from the repository."""
-        pass
 
 
 class BookRepository(AbstractBookRepository):
@@ -50,7 +45,7 @@ class BookRepository(AbstractBookRepository):
     def __init__(self, session: scoped_session[Session]) -> None:
         self.session = session
 
-    def get_all(self) -> List[Book]:
+    def get_all(self) -> list[Book]:
         return self.session.query(Book).all()
 
     def get_by_id(self, book_id: int) -> Book:

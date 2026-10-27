@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import Annotated, Any, Dict, List
+from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI
 from pydantic import ValidationError
@@ -37,7 +37,7 @@ async def health():
 async def get_books(
     book_service: Annotated[BookService, Depends(get_book_service)],
     author: str | None = None,
-) -> Dict[str, List[BookSchema]]:
+) -> dict[str, list[BookSchema]]:
     if author:
         books = book_service.get_all_books_by_author(author)
     else:
@@ -49,7 +49,7 @@ async def get_books(
 async def get_book(
     book_id: int,
     book_service: Annotated[BookService, Depends(get_book_service)],
-) -> Dict[str, str] | Dict[str, BookSchema]:
+) -> dict[str, str] | dict[str, BookSchema]:
     book = book_service.get_book(book_id)
     if not book:
         return {"error": f"Book not found with ID {book_id}"}
@@ -60,7 +60,7 @@ async def get_book(
 async def delete_book(
     book_id: int,
     book_service: Annotated[BookService, Depends(get_book_service)],
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     deleted_book = book_service.delete_book(book_id)
     if deleted_book:
         return {
@@ -74,7 +74,7 @@ async def delete_book(
 async def create_book(
     book: BookSchema,
     book_service: Annotated[BookService, Depends(get_book_service)],
-) -> Dict[str, BookSchema | str]:
+) -> dict[str, BookSchema | str]:
     try:
         created_book = book_service.create_book(book)
         return {"book": created_book}

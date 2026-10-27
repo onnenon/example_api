@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from book_api.models import Book
 from book_api.repo import AbstractBookRepository
 from book_api.schemas import BookSchema
@@ -9,7 +7,7 @@ class BookService:
     def __init__(self, book_repository: AbstractBookRepository):
         self.book_repository = book_repository
 
-    def get_all_books(self) -> List[BookSchema]:
+    def get_all_books(self) -> list[BookSchema]:
         """
         Retrieve all books from the repository.
 
@@ -37,7 +35,7 @@ class BookService:
         saved_book = self.book_repository.save(book)
         return BookSchema.model_validate(saved_book)
 
-    def get_book(self, book_id: int) -> Optional[BookSchema]:
+    def get_book(self, book_id: int) -> BookSchema | None:
         """
         Retrieve a book by its ID.
 
@@ -70,7 +68,7 @@ class BookService:
         except ValueError:
             return False
 
-    def get_all_books_by_author(self, author: str) -> List[BookSchema]:
+    def get_all_books_by_author(self, author: str) -> list[BookSchema]:
         """
         Retrieve all books by a specific author.
 
