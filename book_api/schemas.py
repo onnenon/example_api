@@ -1,12 +1,10 @@
-from typing import Optional
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class BookSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    id: Optional[int] = Field(default=None)
+    id: int | None = Field(default=None)
     title: str
     author: str
     isbn: str

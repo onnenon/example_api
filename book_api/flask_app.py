@@ -60,17 +60,13 @@ def get_book(book_id):
 
 @app.api.route("/books/<int:book_id>", methods=["DELETE"])
 def delete_book(book_id):
-    try:
-        deleted_book = app.book_service.delete_book(book_id)
-        if deleted_book:
-            return {
-                "message": "Book deleted successfully",
-                "id": book_id,
-            }, 200
-        return {"error": f"Book not found with ID {book_id}"}, 404
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        return {"error": "An unexpected error occurred"}, 500
+    deleted_book = app.book_service.delete_book(book_id)
+    if deleted_book:
+        return {
+            "message": "Book deleted successfully",
+            "id": book_id,
+        }, 200
+    return {"error": f"Book not found with ID {book_id}"}, 404
 
 
 @app.api.route("/books", methods=["POST"])
@@ -80,10 +76,10 @@ def create_book():
         new_book = app.book_service.create_book(book_data)
         return {"message": "Book created successfully", "id": new_book.id}, 201
     except ValidationError as e:
-        logger.error(f"Validation error: {str(e)}")
+        logger.error(f"Validation error: {e!s}")
         return {"error": json.loads(e.json())}, 400
     except DuplicateBookError as e:
-        logger.error(f"Duplicate book error: {str(e)}")
+        logger.error(f"Duplicate book error: {e!s}")
         return {"error": str(e)}, 409
 
 
