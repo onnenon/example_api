@@ -12,7 +12,7 @@ This repository demonstrates well-structured API implementations using both Flas
 
 ## Requirements
 
-- Python 3.13+
+- Python 3.14+
 - uv (Python package installer)
 
 ## Installation
